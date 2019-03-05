@@ -3,6 +3,7 @@ const router = require('./router')
 const chalk = require('chalk')
 const config = require('./config')
 
+require('./mongodb/db.js')
 
 const app = express()
 
