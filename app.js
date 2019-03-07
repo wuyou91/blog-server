@@ -1,6 +1,8 @@
 const express = require('express')
 const router = require('./router')
 const chalk = require('chalk')
+const session = require('express-session')
+const connectMongo = require('connect-mongo')
 const config = require('./config')
 
 require('./mongodb/db.js')
@@ -21,6 +23,16 @@ app.all('*', (req, res, next) => {
     next();
 	}
 });
+
+const SessionStore = connectMongo(session)
+app.use(session({
+  name:config.session.name,
+  secret:config.session.secret,
+  cookie:config.session.cookie,
+  store: new SessionStore({
+    url: config.db_base
+  })
+}))
 
 router(app);
 

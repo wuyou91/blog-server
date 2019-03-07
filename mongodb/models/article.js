@@ -2,7 +2,7 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
 const articleSchema = new Schema({
-  id: Number,
+  id: String,
   create_time: String,
   title: String,
   desc: String,

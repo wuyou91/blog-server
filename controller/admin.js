@@ -6,6 +6,7 @@ module.exports = {
     const form = new formidable.IncomingForm()
     form.parse(req, function(err,fields,files){
       if(fields.name === config.admin_name && fields.password === config.admin_password){
+        req.session.admin_id = '1991';
         res.send({
           status: 1,
           success: '登录成功'
