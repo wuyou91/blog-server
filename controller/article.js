@@ -1,6 +1,7 @@
 const formidable = require('formidable')
 const articleModel = require('../mongodb/models/article.js')
 const util = require('../util')
+
 module.exports = {
   async add (req, res) {
     const form = new formidable.IncomingForm()
@@ -19,17 +20,24 @@ module.exports = {
         })
         return
       }
-
       const article_index = await util.getId('article_id')
-      await articleModel.create({
-        ...fields,
-        create_time: new Date().toLocaleString(),
-        id: util.PrefixInteger(article_index, 6)
-      })
-      res.send({
-        status: 1,
-        message: '文章提交成功'
-      })
+      try {
+        await articleModel.create({
+          ...fields,
+          create_time: new Date(),
+          id: util.PrefixInteger(article_index, 6)
+        })
+        res.send({
+          status: 1,
+          message: '文章提交成功'
+        })
+      } catch (error) {
+        res.send({
+          status: 0,
+          message: '写入文章出现错误'
+        })
+        throw Error(error)
+      }
     })
   },
   async delete(req, res) {
@@ -53,5 +61,31 @@ module.exports = {
         message: '未获取到文章id，请重新操作'
       })
     }
+  },
+  async update (req, res) {
+    const form = new formidable.IncomingForm()
+    form.parse(req, async (err, fields, files) => {
+      const id = fields.article_id
+      const content = fields.content
+      if(!id){
+        res.send({
+          status: 0,
+          message: '没有文章id'
+        })
+      }
+      try {
+        await articleModel.update({id:id},content)
+        res.send({
+          status: 1,
+          message: '文章更新成功'
+        })      
+      } catch (err) {
+        res.send({
+          status: 0,
+          message: '更新失败'
+        }) 
+        throw Error(err)     
+      }
+    })
   }
 }

@@ -10,11 +10,10 @@ const Ids = mongoose.model('Ids', idsSchema)
 
 Ids.findOne((err, data) => {
   if(!data){
-    newIds = new Ids({
+    Ids.create({
       article_id: 0,
       admin_id: 0
     })
-    newIds.save()
   }
 })
 
