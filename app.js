@@ -17,17 +17,20 @@ app.all('*', (req, res, next) => {
 	res.header("Access-Control-Allow-Methods", "PUT,POST,GET,DELETE,OPTIONS");
   res.header("Access-Control-Allow-Credentials", true); //可以带cookies
 	res.header("X-Powered-By", 'Express');
-	if (req.method == 'OPTIONS') {
-  	res.sendStatus(200);
-	} else {
-    next();
-	}
+	// if (req.method == 'OPTIONS') {
+  // 	res.sendStatus(200);
+	// } else {
+  //   next();
+  // }
+  next()
 });
 
 const SessionStore = connectMongo(session)
 app.use(session({
   name:config.session.name,
   secret:config.session.secret,
+  resave: true,
+	saveUninitialized: false,
   cookie:config.session.cookie,
   store: new SessionStore({
     url: config.db_base
@@ -37,7 +40,7 @@ app.use(session({
 router(app);
 
 app.use(express.static(__dirname + '/public'))
-app.listen(config.port, () => {
+app.listen(config.port, config.host, () => {
 	console.log(
 		chalk.green(`成功监听端口：${config.port}`)
 	)

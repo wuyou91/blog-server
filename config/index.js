@@ -1,7 +1,6 @@
 module.exports = {
+  host:'10.10.60.65',
   port: 1003,
-  admin_name: 'test',
-  admin_password: '123456',
   db_base:'mongodb://localhost:27017/blog',
   session: {
     name: 'sid',
@@ -9,7 +8,7 @@ module.exports = {
     cookie:{
         httpOnly: true,
         secure:   false,
-        maxAge:   365 * 24 * 60 * 60 * 1000 // 1年
+        maxAge:   24 * 60 * 60 * 1000 // 1天
     }
   }
 }

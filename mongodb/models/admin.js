@@ -5,6 +5,8 @@ const adminSchema = new mongoose.Schema({
   name: String,
   password: String,
   create_time: Date,
+  grade: {type:Number, default: 1},
+  desc: {type:String, default: '普通管理员'},
   avatar: {type:String, default: 'default.jpg'}
 })
 

@@ -1,26 +1,150 @@
 const formidable = require('formidable')
-const config = require('../config')
 const adminModel = require('../mongodb/models/admin.js')
+const util = require('../util')
 
 module.exports = {
-  login (req, res) {
+  async login (req, res) {
     const form = new formidable.IncomingForm()
-    form.parse(req, function(err,fields,files){
-      if(fields.name === config.admin_name && fields.password === config.admin_password){
-        req.session.admin_id = '2019';
-        res.send({
-          status: 1,
-          message: '登录成功'
-        })
-      }else{
+    form.parse(req, async (err,fields,files) => {
+      if(err){
         res.send({
           status: 0,
-          message: '用户名或密码错误'
+          message: '登录出错'
+        })
+        return
+      }
+      const{name, password} = fields
+      try {
+        if(!name){
+          throw new Error('用户名参数出错')
+        }else if(!password){
+          throw new Error('密码参数出错')
+        }
+      } catch (error) {
+        res.send({
+          status: 0,
+          message: error.message
+        })
+        return
+      }
+      try {
+        const adminInfo = await adminModel.findOne({name})
+        if(!adminInfo){
+          res.send({
+            status: 0,
+            message: '用户不存在'
+          })
+        }else{
+          if(password === adminInfo.password){
+            req.session.admin_id = adminInfo.id
+            res.send({
+              status: 1,
+              message: '登录成功'
+            })
+          }else{
+            res.send({
+              status:0,
+              message: '密码不正确'
+            })
+          }
+        }
+      } catch (error) {
+        res.send({
+          status: 0,
+          message: '管理员登录失败'
         })
       }
     })
   },
-  getAdminInfo (req, res) {
-    admin_id = req.session.admin_id
-  }
+
+  async register (req, res) {
+    const form = new formidable.IncomingForm()
+    form.parse(req, async (err,fields,files) => {
+      if (err) {
+				res.send({
+					status: 0,
+					message: '表单信息错误'
+				})
+				return
+      }
+      const{name, password} = fields
+      try {
+        if(!name){
+          throw new Error('用户名不正确，注册失败')
+        }else if(!password){
+          throw new Error('密码错误，注册失败')
+        }
+      } catch (error) {
+        res.send({
+          status: 0,
+          message: error.message
+        })
+        return
+      }
+      try {
+        const adminInfo = await adminModel.findOne({name})
+        if(adminInfo){
+          res.send({
+            status: 0,
+            message: '用户名已存在，注册失败'
+          })
+        }else{
+          const id = await util.getId('admin_id')
+          const create_time = new Date()  
+          await adminModel.create({
+            id,
+            name,
+            password,
+            create_time
+          })
+          req.session.admin_id = id;
+          res.send({
+            status: 1,
+            message: '注册成功！'
+          })
+        }
+      } catch (error) {
+        console.log(error)
+        res.send({
+          status: 0,
+          message: '注册管理员失败'
+        })
+      }
+    })
+  },
+
+  async getInfo (req, res) {
+    const id = req.session.admin_id
+    if(!id){
+      res.send({
+        status: 0,
+        message: '获取数据失败'
+      })
+      console.log(`session是${req.session.admin_id}`)
+      return
+    }
+    try {
+      const adminInfo = await adminModel.findOne({id}, '-_id -__v -password')
+      if(!adminInfo){
+        res.send({
+          status: 0,
+          message: '未找到管理员信息'
+        })
+        console.log(`未找到管理员信息，session是${req.session.admin_id}`)
+
+      }else{
+        res.send({
+          status: 1,
+          message: '获取数据成功',
+          data: adminInfo
+        })
+        console.log(`数据获取成功，session是${req.session.admin_id}`)
+      }
+    } catch (error) {
+      res.send({
+        status: 0,
+        message: '管理员信息获取失败'
+      })
+    }
+  },
 }
