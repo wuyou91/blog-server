@@ -120,7 +120,6 @@ module.exports = {
         status: 0,
         message: '获取数据失败'
       })
-      console.log(`session是${req.session.admin_id}`)
       return
     }
     try {
@@ -130,15 +129,12 @@ module.exports = {
           status: 0,
           message: '未找到管理员信息'
         })
-        console.log(`未找到管理员信息，session是${req.session.admin_id}`)
-
       }else{
         res.send({
           status: 1,
           message: '获取数据成功',
           data: adminInfo
         })
-        console.log(`数据获取成功，session是${req.session.admin_id}`)
       }
     } catch (error) {
       res.send({
