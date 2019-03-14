@@ -87,5 +87,14 @@ module.exports = {
         throw Error(err)     
       }
     })
+  },
+  async list(req,res) {
+    const {page, limit} = req.query
+    try {
+      const articleList = await articleModel.find().sort({'create_time':-1}).skip(Number(page)).limit(Number(limit))
+      res.send(articleList)
+    } catch (error) {
+      console.log(error)
+    }
   }
 }
