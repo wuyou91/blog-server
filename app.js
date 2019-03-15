@@ -4,6 +4,7 @@ const chalk = require('chalk')
 const session = require('express-session')
 const connectMongo = require('connect-mongo')
 const config = require('./config')
+const visitorCount = require('./middlewares/visitorCount')
 
 require('./mongodb/db.js')
 
@@ -35,8 +36,9 @@ app.use(session({
   store: new SessionStore({
     url: config.db_base
   })
-}))
-
+}),
+visitorCount
+)
 router(app);
 
 app.use(express.static(__dirname + '/public'))

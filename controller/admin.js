@@ -1,5 +1,6 @@
 const formidable = require('formidable')
-const adminModel = require('../mongodb/models/admin.js')
+const adminModel = require('../mongodb/models/admin')
+const visitorModel = require('../mongodb/models/visitor')
 const util = require('../util')
 
 module.exports = {
@@ -143,4 +144,23 @@ module.exports = {
       })
     }
   },
+
+  async visitor(req,res) {
+    const limit = Number(req.query.limit)
+    const page = Number(req.query.page)
+    const skip = limit*(page-1)
+    try {
+      const articleList = await visitorModel.find().sort({'id':1}).limit(limit).skip(skip)
+      const articleTotal = await visitorModel.count()
+      res.send({
+        status: 1,
+        total: articleTotal,
+        data: articleList,
+        message: '数据请求成功'
+      })
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
 }

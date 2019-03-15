@@ -21,10 +21,13 @@ module.exports = {
         return
       }
       const article_index = await util.getId('article_id')
+      const create_date = new Date()
+      const date_string = create_date.toLocaleString()
       try {
         await articleModel.create({
           ...fields,
-          create_time: new Date(),
+          create_date,
+          date_string,
           id: util.PrefixInteger(article_index, 6)
         })
         res.send({
@@ -89,10 +92,18 @@ module.exports = {
     })
   },
   async list(req,res) {
-    const {page, limit} = req.query
+    const limit = Number(req.query.limit)
+    const page = Number(req.query.page)
+    const skip = limit*(page-1)
     try {
-      const articleList = await articleModel.find().sort({'create_time':-1}).skip(Number(page)).limit(Number(limit))
-      res.send(articleList)
+      const articleList = await articleModel.find().sort({'create_date':1}).limit(limit).skip(skip)
+      const articleTotal = await articleModel.count()
+      res.send({
+        status: 1,
+        total: articleTotal,
+        data: articleList,
+        message: '数据请求成功'
+      })
     } catch (error) {
       console.log(error)
     }

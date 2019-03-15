@@ -3,7 +3,8 @@ const Schema = mongoose.Schema
 
 const articleSchema = new Schema({
   id: String,
-  create_time: Date,
+  create_date: Date,
+  date_string: String,
   title: String,
   desc: String,
   tags: [],
