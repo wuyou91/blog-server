@@ -145,6 +145,21 @@ module.exports = {
     }
   },
 
+  async getList(req, res) {
+    try {
+      const adminList = await adminModel.find({}, '-__v -_id -password')
+      const total = await adminModel.count()
+      res.send({
+        status: 1,
+        data: adminList,
+        total,
+        message: '获取管理员列表成功'
+      })
+    } catch (error) {
+      console.log('出错了')
+    }
+  },
+
   async visitor(req,res) {
     const limit = Number(req.query.limit)
     const page = Number(req.query.page)

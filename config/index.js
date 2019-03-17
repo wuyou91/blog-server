@@ -1,6 +1,6 @@
 module.exports = {
-  host:'10.10.60.65',
-  port: 1003,
+  host:'localhost',
+  port: 7003,
   db_base:'mongodb://localhost:27017/blog',
   session: {
     name: 'sid',
