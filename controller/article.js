@@ -20,10 +20,10 @@ module.exports = {
         })
         return
       }
-      const article_index = await util.getId('article_id')
-      const create_date = new Date()
-      const date_string = create_date.toLocaleString()
       try {
+        const article_index = await util.getId('article_id')
+        const create_date = new Date()
+        const date_string = create_date.toLocaleString()
         await articleModel.create({
           ...fields,
           create_date,
@@ -96,7 +96,7 @@ module.exports = {
     const page = Number(req.query.page)
     const skip = limit*(page-1)
     try {
-      const articleList = await articleModel.find().sort({'create_date':1}).limit(limit).skip(skip)
+      const articleList = await articleModel.find({}, '-_id -__v -html -create_date').sort({'create_date':1}).limit(limit).skip(skip)
       const articleTotal = await articleModel.count()
       res.send({
         status: 1,
@@ -107,5 +107,15 @@ module.exports = {
     } catch (error) {
       console.log(error)
     }
+  },
+  async get(req, res) {
+    const id = req.params.article_id
+    const data = await articleModel.findOne({id}, '-__v -_id -create_date')
+    // const data = await articleModel.findOne({id},{$inc:{ clicks:1 }}, '-__v -_id -create_date')
+    res.send({
+      status: 1,
+      data,
+      message: 'OK'
+    })
   }
 }

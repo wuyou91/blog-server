@@ -7,6 +7,8 @@ const articleSchema = new Schema({
   date_string: String,
   title: String,
   desc: String,
+  clicks: {type:Number, default:32},
+  cover: {type:String, default: 'default_cover.jpg'},
   tags: [],
   html: String,
 })
