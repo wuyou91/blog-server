@@ -26,6 +26,8 @@ app.all('*', (req, res, next) => {
   next()
 });
 
+app.all('/', visitorCount)
+
 const SessionStore = connectMongo(session)
 app.use(session({
   name:config.session.name,
@@ -36,8 +38,7 @@ app.use(session({
   store: new SessionStore({
     url: config.db_base
   })
-}),
-visitorCount
+})
 )
 router(app);
 

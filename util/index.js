@@ -18,6 +18,9 @@ const util = {
   },
   PrefixInteger(num, length) {
     return (Array(length).join('0') + num).slice(-length);
+  },
+  randNum(min,max) {
+    return parseInt(Math.random()*(max-min+1)+min,10)
   }
 }
 

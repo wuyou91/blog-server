@@ -21,6 +21,8 @@ module.exports = {
         return
       }
       try {
+        const clicks = util.randNum(45,260)
+        const stars = util.randNum(2,24)
         const article_index = await util.getId('article_id')
         const create_date = new Date()
         const date_string = create_date.toLocaleString()
@@ -28,6 +30,8 @@ module.exports = {
           ...fields,
           create_date,
           date_string,
+          clicks,
+          stars,
           id: util.PrefixInteger(article_index, 6)
         })
         res.send({
@@ -108,14 +112,37 @@ module.exports = {
       console.log(error)
     }
   },
-  async get(req, res) {
+  async handleClick(req, res) {
     const id = req.params.article_id
-    const data = await articleModel.findOne({id}, '-__v -_id -create_date')
-    // const data = await articleModel.findOne({id},{$inc:{ clicks:1 }}, '-__v -_id -create_date')
+    // const data = await articleModel.findOne({id}, '-__v -_id -create_date')
+    const data = await articleModel.findOneAndUpdate({id},{$inc:{ clicks:1 }})
     res.send({
       status: 1,
       data,
       message: 'OK'
     })
+  },
+  async star(req, res) {
+    const { id, type }= req.query
+    try {
+      if(type === 'star') {
+        await articleModel.update({id}, {$inc:{ stars: 1}})
+        res.send({
+          status: 1,
+          message: '加心成功'
+        })
+      }else{
+        await articleModel.update({id}, {$inc:{ stars: -1}})
+        res.send({
+          status: 1,
+          message: '取消加心成功'
+        })
+      } 
+    } catch (error) {
+      res.send({
+        status: 0,
+        message: '操作失败'
+      })
+    }
   }
 }
