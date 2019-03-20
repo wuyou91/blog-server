@@ -115,7 +115,7 @@ module.exports = {
   async handleClick(req, res) {
     const id = req.params.article_id
     // const data = await articleModel.findOne({id}, '-__v -_id -create_date')
-    const data = await articleModel.findOneAndUpdate({id},{$inc:{ clicks:1 }})
+    const data = await articleModel.findOneAndUpdate({id},{$inc:{ clicks:1 }},{projection: { "__v" : 0, "_id" : 0, "create_date": 0 }})
     res.send({
       status: 1,
       data,
