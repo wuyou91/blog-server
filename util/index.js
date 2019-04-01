@@ -1,6 +1,6 @@
 const Ids = require('../mongodb/models/ids')
 const util = {
-  types: ['article_id', 'admin_id', 'visitor_id', 'tag_id'],
+  types: ['article_id', 'admin_id', 'visitor_id'],
   async getId(type){
     if(!this.types.includes(type)){
 			throw new Error('id类型错误');

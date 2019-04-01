@@ -24,11 +24,9 @@ module.exports = {
         const clicks = util.randNum(45,260)
         const stars = util.randNum(2,24)
         const article_index = await util.getId('article_id')
-        const create_date = new Date()
-        const date_string = create_date.toLocaleString()
+        const date_string = new Date().toLocaleString()
         await articleModel.create({
           ...fields,
-          create_date,
           date_string,
           clicks,
           stars,
@@ -89,7 +87,7 @@ module.exports = {
       } catch (err) {
         res.send({
           status: 0,
-          message: '更新失败'
+          message: '操作失败'
         }) 
         throw Error(err)     
       }
@@ -99,12 +97,39 @@ module.exports = {
     const limit = Number(req.query.limit)
     const page = Number(req.query.page)
     const skip = limit*(page-1)
+    if(req.query.deleted){
+      try {
+        const articleList = await articleModel.find({"deleted":true}, '-_id -__v -html -create_date').sort({'create_date':-1}).limit(limit).skip(skip)
+        const articleTotal = await articleModel.countDocuments({"deleted":true})
+        res.send({
+          status: 1,
+          total: articleTotal,
+          data: articleList,
+          message: '数据请求成功'
+        })
+      } catch (error) {
+        console.log(error)
+      }
+    }else{
+      try {
+        const articleList = await articleModel.find({"deleted":{$ne: true}}, '-_id -__v -html -create_date').sort({'create_date':-1}).limit(limit).skip(skip)
+        const articleTotal = await articleModel.countDocuments({"deleted":{$ne: true}})
+        res.send({
+          status: 1,
+          total: articleTotal,
+          data: articleList,
+          message: '数据请求成功'
+        })
+      } catch (error) {
+        console.log(error)
+      }
+    }
+  },
+  async hot(req,res) {
     try {
-      const articleList = await articleModel.find({}, '-_id -__v -html -create_date').sort({'create_date':1}).limit(limit).skip(skip)
-      const articleTotal = await articleModel.count()
+      const articleList = await articleModel.find({}, '-_id -__v -html -create_date').sort({'clicks':-1}).limit(5)
       res.send({
         status: 1,
-        total: articleTotal,
         data: articleList,
         message: '数据请求成功'
       })

@@ -148,7 +148,7 @@ module.exports = {
   async getList(req, res) {
     try {
       const adminList = await adminModel.find({}, '-__v -_id -password')
-      const total = await adminModel.count()
+      const total = await adminModel.countDocuments()
       res.send({
         status: 1,
         data: adminList,
@@ -165,13 +165,25 @@ module.exports = {
     const page = Number(req.query.page)
     const skip = limit*(page-1)
     try {
-      const articleList = await visitorModel.find().sort({'id':1}).limit(limit).skip(skip)
-      const articleTotal = await visitorModel.count()
+      const visitorList = await visitorModel.find().sort({'id':1}).limit(limit).skip(skip)
+      const visitorTotal = await visitorModel.countDocuments()
       res.send({
         status: 1,
-        total: articleTotal,
-        data: articleList,
+        total: visitorTotal,
+        data: visitorList,
         message: '数据请求成功'
+      })
+    } catch (error) {
+      console.log(error)
+    }
+  },
+  async visitorCount(req,res) {
+    try {
+      const count = await visitorModel.aggregate([{ $group : { _id : null, count : {$sum : "$visit_count"}}}])
+      res.send({
+        status: 1,
+        data:count,
+        message: '访问总量获取成功'
       })
     } catch (error) {
       console.log(error)

@@ -9,6 +9,7 @@ router.post('/register', admin.register)
 router.get('/getInfo', admin.getInfo)
 router.get('/list', admin.getList)
 router.get('/visitor', admin.visitor)
+router.get('/visitorCount', admin.visitorCount)
 
 module.exports = router
 

@@ -5,6 +5,7 @@ const checkLogin = require('../middlewares/checkLogin')
 
 router.post('/addArticle',article.add)
 router.get('/articleList',article.list)
+router.get('/hotArticle',article.hot)
 router.get('/deleteArticle',article.delete)
 router.post('/updateArticle',article.update)
 router.get('/star', article.star)
