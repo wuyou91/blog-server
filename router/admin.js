@@ -5,11 +5,13 @@ const checkLogin = require('../middlewares/checkLogin')
 
 
 router.post('/login',admin.login)
+router.get('/singout', admin.singout)
 router.post('/register', admin.register)
-router.get('/getInfo', admin.getInfo)
-router.get('/list', admin.getList)
-router.get('/visitor', admin.visitor)
+router.get('/getInfo', checkLogin, admin.getInfo)
+router.get('/list', checkLogin, admin.getList)
+router.get('/visitor',checkLogin, admin.visitor)
 router.get('/visitorCount', admin.visitorCount)
+router.get('/blogInfo', checkLogin, admin.blogInfo)
 
 module.exports = router
 

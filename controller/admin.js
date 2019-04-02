@@ -1,6 +1,8 @@
 const formidable = require('formidable')
 const adminModel = require('../mongodb/models/admin')
 const visitorModel = require('../mongodb/models/visitor')
+const articleModel = require('../mongodb/models/article.js')
+
 const util = require('../util')
 
 module.exports = {
@@ -56,6 +58,22 @@ module.exports = {
         })
       }
     })
+  },
+
+  async singout(req,res) {
+    try{
+			delete req.session.admin_id;
+			res.send({
+				status: 1,
+				message: '退出成功'
+			})
+		}catch(err){
+			console.log('退出失败', err)
+			res.send({
+				status: 0,
+				message: '退出失败'
+			})
+		}
   },
 
   async register (req, res) {
@@ -186,6 +204,28 @@ module.exports = {
         message: '访问总量获取成功'
       })
     } catch (error) {
+      console.log(error)
+    }
+  },
+  async blogInfo(req,res){
+    try {
+      const visitorCount = await visitorModel.aggregate([{ $group : { _id : null, count : {$sum : "$visit_count"}}}])
+      const articleCount = await articleModel.countDocuments()
+      const deletedArticle = await articleModel.countDocuments({"deleted":true})
+      res.send({
+        status: 1,
+        data:{
+          visitorCount:visitorCount[0].count,
+          articleCount,
+          deletedArticle
+        },
+        message: 'blog概览数据请求成功'
+      })
+    } catch (error) {
+      res.send({
+        status:0,
+        message: error.message
+      })
       console.log(error)
     }
   }
