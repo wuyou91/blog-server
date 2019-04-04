@@ -8,7 +8,7 @@ module.exports = {
     cookie:{
         httpOnly: true,
         secure:   false,
-        maxAge:   24 * 60 * 60 * 1000 // 1天
+        maxAge:   1000 * 60 * 60 * 24 * 365 // 1年
     }
   }
 }
