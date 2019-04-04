@@ -1,9 +1,6 @@
 module.exports = function(req, res, next){
   if(!req.session.admin_id){
-    res.send({
-      status: 0,
-      message: '还未登录'
-    })
+    res.status(403).send('你还未登陆，或登陆已过期');
     return
   }else{
     next()
