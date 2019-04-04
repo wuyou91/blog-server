@@ -8,7 +8,8 @@ module.exports = {
     cookie:{
         httpOnly: true,
         secure:   false,
-        maxAge:   1000 * 60 * 60 * 24 * 365 // 1年
+        maxAge:   1000 * 60 * 60 * 24 * 365 , // 1年
+        domain:'.yancx.cn'
     }
   }
 }
