@@ -9,7 +9,7 @@ const articleSchema = new Schema({
   desc: String,
   clicks: Number,
   stars: Number,
-  cover: {type:String, default: 'default_cover.jpg'},
+  cover: {type:String, default: 'image/default_cover.jpg'},
   classify: String,
   deleted:{type:Boolean, default: false},
   html: String

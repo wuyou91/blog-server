@@ -1,6 +1,5 @@
 const mongoose = require('mongoose')
-const config = require('../config')
-
+const config = require('config-lite')(__dirname)
 mongoose.connect(config.db_base, { useNewUrlParser: true })
 
 const db = mongoose.connection

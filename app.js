@@ -3,7 +3,7 @@ const router = require('./router')
 const chalk = require('chalk')
 const session = require('express-session')
 const connectMongo = require('connect-mongo')
-const config = require('./config')
+const config = require('config-lite')(__dirname);
 const visitorCount = require('./middlewares/visitorCount')
 
 require('./mongodb/db.js')

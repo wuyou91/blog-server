@@ -7,7 +7,7 @@ const adminSchema = new mongoose.Schema({
   create_time: Date,
   grade: {type:Number, default: 1},
   desc: {type:String, default: '普通管理员'},
-  avatar: {type:String, default: 'default_avatar.jpg'}
+  avatar: {type:String, default: 'image/default_avatar.jpg'}
 })
 
 adminSchema.index({id: 1})
