@@ -1,7 +1,7 @@
 {
   "name": "blog-server",
   "version": "1.0.0",
-  "description": "基于node的个人博客服务器程序",
+  "description": "基于node的个人网站服务器程序",
   "main": "index.js",
   "scripts": {
     "dev": "cross-env NODE_ENV=development nodemon app.js",
@@ -10,14 +10,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/wuyou91/blog-server.git"
+    "url": "git+https://github.com/wuyou91/node-server.git"
   },
   "author": "wuyou",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/wuyou91/blog-server/issues"
+    "url": "https://github.com/wuyou91/nide-server/issues"
   },
-  "homepage": "https://github.com/wuyou91/blog-server#readme",
+  "homepage": "https://github.com/wuyou91/node-server#readme",
   "dependencies": {
     "chalk": "^2.4.2",
     "config-lite": "^2.1.0",
