@@ -44,4 +44,4 @@
 ～～～
 
 ## 项目截图
-![img](/screenshot/01.png)
+![img](/screenshot/1.jpg)
