@@ -54,31 +54,31 @@
 
 ## 项目截图
 后台管理系统登陆页
-![img](/screenshot/1.jpg)
+![img](http://static.cdn.yancx.cn/mkd/1.jpg)
 
 用户中心
-![img](/screenshot/2.jpg)
+![img](http://static.cdn.yancx.cn/mkd/2.jpg)
 
 文章管理
-![img](/screenshot/3.jpg)
+![img](http://static.cdn.yancx.cn/mkd/3.jpg)
 
 添加文章
-![img](/screenshot/4.jpg)
+![img](http://static.cdn.yancx.cn/mkd/4.jpg)
 
 图片上传
-![img](/screenshot/5.jpg)
+![img](http://static.cdn.yancx.cn/mkd/5.jpg)
 
 访客统计
-![img](/screenshot/6.jpg)
+![img](http://static.cdn.yancx.cn/mkd/6.jpg)
 
 前台首页
-![img](/screenshot/7.jpg)
+![img](http://static.cdn.yancx.cn/mkd/7.jpg)
 
 文章内容页
-![img](/screenshot/8.jpg)
+![img](http://static.cdn.yancx.cn/mkd/8.jpg)
 
 瀑布流图片展示页
-![img](/screenshot/9.jpg)
+![img](http://static.cdn.yancx.cn/mkd/9.jpg)
 
 ## 项目预览
 [后台管理系统](http://admin.yancx.cn)
