@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
-const admin = require('../controller/admin.js')
-const checkLogin = require('../middlewares/checkLogin')
+const admin = require('../../controller/admin')
+const checkLogin = require('../../middlewares/checkLogin.js')
 
 
 router.post('/login',admin.login)

@@ -1,9 +1,14 @@
-const admin = require('./admin')
-const article = require('./article')
-const photo = require('./photo')
+const express = require('express')
+const router = express.Router()
 
-module.exports = app => {
-  app.use('/admin', admin)
-  app.use('/article', article)
-  app.use('/photo',photo)
-}
+const admin = require('./module/admin')
+const article = require('./module/article')
+const photo = require('./module/photo')
+const tag = require('./module/tag')
+
+router.use('/admin', admin)
+router.use('/article', article)
+router.use('/photo', photo)
+router.use('/tag', tag)
+
+module.exports = router

@@ -1,10 +1,10 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
+const util = require('../../util')
 
 const articleSchema = new Schema({
   id: String,
-  create_date: {type: Date, default: Date.now},
-  date_string: String,
+  create_date: String,
   title: String,
   desc: String,
   clicks: Number,
@@ -12,7 +12,8 @@ const articleSchema = new Schema({
   cover: {type:String, default: 'image/default_cover.jpg'},
   classify: String,
   deleted:{type:Boolean, default: false},
-  html: String
+  html: String,
+  tags: { type: Array, default: [] }
 })
 
 articleSchema.index({id:1})

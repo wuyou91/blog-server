@@ -1,10 +1,10 @@
 const mongoose = require('mongoose')
-
 const adminSchema = new mongoose.Schema({
-  id: Number,
+  id: String,
   name: String,
   password: String,
-  create_time: Date,
+  create_time: String,
+  last_login_time: String,
   grade: {type:Number, default: 1},
   desc: {type:String, default: '普通管理员'},
   avatar: {type:String, default: 'image/default_avatar.jpg'}

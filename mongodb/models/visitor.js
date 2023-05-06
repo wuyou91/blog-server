@@ -6,7 +6,9 @@ const visitorSchema = new Schema({
   ip: String,
   first_time: String,
   last_time: String,
-  visit_count: Number
+  visit_count: Number,
+  first_header: Object,
+  last_header: Object
 })
 
 visitorSchema.index({id:1})

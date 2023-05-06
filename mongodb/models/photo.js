@@ -1,8 +1,11 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
+const util = require('../../util')
+
 const photoSchema = new Schema({
-  upload_date: {type: Date, default: Date.now},
+  id: String,
+  upload_date: String,
   name: String,
   hash: String,
   size: String,

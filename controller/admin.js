@@ -6,6 +6,7 @@ const articleModel = require('../mongodb/models/article.js')
 const util = require('../util')
 
 module.exports = {
+  // 登陆
   async login (req, res) {
     const form = new formidable.IncomingForm()
     form.parse(req, async (err,fields,files) => {
@@ -40,6 +41,8 @@ module.exports = {
         }else{
           if(password === adminInfo.password){
             req.session.admin_id = adminInfo.id
+            adminInfo.last_login_time = util.formatDateTime()
+            adminInfo.save()
             res.send({
               status: 1,
               message: '登录成功'
@@ -59,7 +62,7 @@ module.exports = {
       }
     })
   },
-
+  // 退出
   async singout(req,res) {
     try{
 			delete req.session.admin_id;
@@ -75,7 +78,7 @@ module.exports = {
 			})
 		}
   },
-
+  // 注册
   async register (req, res) {
     const form = new formidable.IncomingForm()
     form.parse(req, async (err,fields,files) => {
@@ -108,13 +111,16 @@ module.exports = {
             message: '用户名已存在，注册失败'
           })
         }else{
-          const id = await util.getId('admin_id')
-          const create_time = new Date()  
+          const admin_index = await util.getId('admin_id')
+          const id = util.PrefixInteger(admin_index, 6)
+          const create_time = util.formatDateTime()
+          console.log(id)
           await adminModel.create({
             id,
             name,
             password,
-            create_time
+            create_time,
+            last_login_time: create_time
           })
           req.session.admin_id = id;
           res.send({
@@ -131,7 +137,7 @@ module.exports = {
       }
     })
   },
-
+  // 获取概览信息
   async getInfo (req, res) {
     const id = req.session.admin_id
     if(!id){
@@ -162,10 +168,10 @@ module.exports = {
       })
     }
   },
-
+  // 获取管理员列表
   async getList(req, res) {
     try {
-      const adminList = await adminModel.find({}, '-__v -_id -password')
+      const adminList = await adminModel.find({ grade: { $ne: 0 } }, '-__v -_id -password')
       const total = await adminModel.countDocuments()
       res.send({
         status: 1,
@@ -177,7 +183,7 @@ module.exports = {
       console.log('出错了')
     }
   },
-
+  // 获取访客列表
   async visitor(req,res) {
     const limit = Number(req.query.limit)
     const page = Number(req.query.page)
@@ -195,6 +201,7 @@ module.exports = {
       console.log(error)
     }
   },
+  // 获取访客统计
   async visitorCount(req,res) {
     try {
       const count = await visitorModel.aggregate([{ $group : { _id : null, count : {$sum : "$visit_count"}}}])
@@ -207,6 +214,7 @@ module.exports = {
       console.log(error)
     }
   },
+  // 文章统计
   async blogInfo(req,res){
     try {
       const visitorCount = await visitorModel.aggregate([{ $group : { _id : null, count : {$sum : "$visit_count"}}}])
@@ -215,7 +223,7 @@ module.exports = {
       res.send({
         status: 1,
         data:{
-          visitorCount:visitorCount[0].count,
+          visitorCount:visitorCount[0] ? visitorCount[0].count : 0,
           articleCount,
           deletedArticle
         },

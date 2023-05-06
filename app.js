@@ -5,7 +5,7 @@ const session = require('express-session')
 const connectMongo = require('connect-mongo')
 const config = require('config-lite')(__dirname);
 const visitorCount = require('./middlewares/visitorCount')
-
+  
 require('./mongodb/db.js')
 
 const app = express()
@@ -21,7 +21,7 @@ app.all('*', (req, res, next) => {
   next()
 });
 
-app.all('/', visitorCount)
+app.use('/', visitorCount)
 
 const SessionStore = connectMongo(session)
 app.use(session({
@@ -35,7 +35,7 @@ app.use(session({
   })
 })
 )
-router(app);
+app.use('/api', router);
 
 app.use(express.static(__dirname + '/public'))
 app.listen(config.port, config.host, () => {

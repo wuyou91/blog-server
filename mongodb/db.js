@@ -1,6 +1,7 @@
 const mongoose = require('mongoose')
 const config = require('config-lite')(__dirname)
-mongoose.connect(config.db_base, { useNewUrlParser: true })
+mongoose.set('useFindAndModify', false)
+mongoose.connect(config.db_base, { useNewUrlParser: true, useUnifiedTopology: true })
 
 const db = mongoose.connection
 
