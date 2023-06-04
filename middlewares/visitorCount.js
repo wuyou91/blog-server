@@ -2,8 +2,8 @@ const visitorModel = require('../mongodb/models/visitor.js')
 const util = require('../util')
 
 module.exports = async (req, res, next) => {
-  const ip = req.ip
   const headers = req.headers
+  const ip = headers['x-real-ip']
   try {
     let hasVisitor = await visitorModel.findOne({ ip })
     if(hasVisitor){
