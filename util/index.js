@@ -25,7 +25,7 @@ const util = {
     return parseInt(Math.random()*(max-min+1)+min,10)
   },
   formatDateTime() {
-    return moment().format('YYYY-MM-DD HH:mm::ss')
+    return moment().format('YYYY-MM-DD HH:mm:ss')
   },
   // 从arr1中过滤出arr2中没有的元素
   filter2Array(arr1, arr2) {
