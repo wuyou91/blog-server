@@ -189,7 +189,7 @@ module.exports = {
     const page = Number(req.query.page)
     const skip = limit*(page-1)
     try {
-      const visitorList = await visitorModel.find().sort({'id':1}).limit(limit).skip(skip)
+      const visitorList = await visitorModel.find().sort({'last_time': -1}).limit(limit).skip(skip)
       const visitorTotal = await visitorModel.countDocuments()
       res.send({
         status: 1,
